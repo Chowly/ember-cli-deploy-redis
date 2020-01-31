@@ -76,7 +76,7 @@ module.exports = {
         if (!this.pluginConfig.url) {
           ['host', 'port'].forEach(this.applyDefaultConfigProperty.bind(this));
         } else {
-          var redisUrlRegexp = new RegExp('^redis://');
+          var redisUrlRegexp = new RegExp('^rediss?://');
 
           if (!this.pluginConfig.url.match(redisUrlRegexp)) {
             throw new Error('Your Redis URL appears to be missing the "redis://" protocol. Update your URL to: redis://' + this.pluginConfig.url);
@@ -151,8 +151,8 @@ module.exports = {
       fetchInitialRevisions: function(/* context */) {
         var redisDeployClient = this.readConfig('redisDeployClient');
         var keyPrefix = this.readConfig('keyPrefix');
-
-        this.log('Listing initial revisions for key: `' + keyPrefix + '`', { verbose: true });
+        
+        console.log('Listing initial revisions for key: `' + keyPrefix + '`', { verbose: true });
         return RSVP.resolve(redisDeployClient.fetchRevisions(keyPrefix))
           .then(function(revisions) {
             return {
